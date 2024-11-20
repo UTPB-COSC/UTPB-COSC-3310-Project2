@@ -3,7 +3,6 @@ section .data
     len_prime equ $ - str_prime
     str_not_prime db " Is not prime", 0x0a, 0x00
     len_not_prime equ $ - str_not_prime
-    num_count dq 0x01
     counter dq 0x01
     max_num dq 1000
     decomp_a dq 0x00
@@ -14,32 +13,17 @@ section .text
 global _start
 
 _start:
-    ; r10 is QWORD [counter]
-    ; r11 is QWORD [decomp_b]
-    ; r13 is QWORD [decomp_a]
-
-loop:
-    push QWORD [counter]
-    call fn_print_digit
-    push QWORD [counter]
-    call is_prime
-    add QWORD [counter], 1
-
-    cmp QWORD [counter], 10
-    je loop_tail
-    jmp loop
-
-loop_tail:
     push QWORD [counter]
     call fn_print_number
     push QWORD [counter]
     call is_prime
-    add QWORD [counter], 1
     
-    mov rax, QWORD [max_num] 
+    add QWORD [counter], 1
+    mov rax, QWORD [max_num]
     cmp QWORD [counter], rax
     je loop_end
-    jmp loop_tail
+    jmp _start
+    
 loop_end:
     mov rax, 1
     int 0x80
@@ -74,7 +58,8 @@ is_prime:
         jmp div_loop_head
     
     div_loop_head:
-        cmp QWORD [decomp_a], 10
+        mov rax, QWORD[max_num]
+        cmp QWORD [decomp_a], rax
         je div_loop_end
         jmp div_loop
     
@@ -90,10 +75,8 @@ is_prime:
         jmp div_loop_mid
         
     div_loop_end:
-        call prime
-        ret
+        jmp prime
     ret
-
 
 fn_print_digit:
     pop rax 
