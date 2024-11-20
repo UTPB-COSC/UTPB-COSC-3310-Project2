@@ -41,6 +41,7 @@ loop_tail:
     je loop_end
     jmp loop_tail
 loop_end:
+    mov rax, 1
     int 0x80
     ret
     
