@@ -1,24 +1,27 @@
-section .data:
+;Holden G, 11/25/24
+;Program prints numbers 1-99, tests if number is prime or not, then prints the result
+
+section .data
     newline db 0x0a, 0x00 ;Newline
     nl_len equ $ - newline ;Length of Newline
 
     ;Array of numbers from 1 to 99 as a string (189 characters total)
     nums db '123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899'
 
-    prime_msg db " is prime", 0x00 ;Message for prime numbers (without newline)
-    not_prime_msg db " is not prime", 0x00 ;Message for non-prime numbers (without newline)
+    prime_msg db " is prime.", 0x00 ;Message for prime numbers
+    not_prime_msg db " is not prime.", 0x00 ;Message for non-prime numbers
 
-    number db '0', '0', 0 ;Buffer to hold the current number
+    number db '0', '0', 0 ;Buffer to hold number and exit character
 
-section .text
+section .text ;Start of program
 global _start
-;changed rdi registers to rsi ones
+;Changed rdi registers to rsi ones
 _start:
     xor rbp, rbp ;Clear rbp register (index variable) to 0 for loop iteration
 
 loop_head:
     cmp rbp, 189 ;Compare current index (rbp) to 189 (length of nums array)
-    jge loop_exit                               ;If index is >= 189, exit loop
+    jge loop_exit ;If index is >= 189, exit loop
 
     ;Get current number from the nums string using rbp as index
     mov rcx, nums ;Load address of current num into rcx
@@ -29,7 +32,7 @@ loop_head:
     add rdx, 1 ;Otherwise, it's a two-digit number (2 bytes)
 
 single_digit:
-    ;Print the current number (single or two digits)
+    ;Print the current number (1 or two 2)
     mov rbx, 1
     mov rax, 4
     add rbp, rdx ;Increment rbp by 1 or 2, depending on number length
@@ -52,7 +55,7 @@ check_prime:
     mov rsi, rax ;Move the number into rsi for prime check
     call is_prime
 
-    ;Print a newline after the current number and message
+    ;Print newline after the current number and message
     mov rdx, nl_len
     mov rcx, newline
     mov rbx, 1
@@ -95,7 +98,7 @@ check_loop:
 
 print_prime:
     ;Print " is prime" message
-    mov rdx, 9 ;Length of "is prime" message
+    mov rdx, 10 ;Length of "is prime" message
     mov rcx, prime_msg
     mov rbx, 1
     mov rax, 4
@@ -104,7 +107,7 @@ print_prime:
 
 print_not_prime:
     ;Print " is not prime" message
-    mov rdx, 13 ;Length os "is not prime" message
+    mov rdx, 14 ;Length os "is not prime" message
     mov rcx, not_prime_msg
     mov rbx, 1
     mov rax, 4
