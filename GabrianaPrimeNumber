@@ -1,0 +1,194 @@
+section .data
+    newline db 0x0A, 0x00
+    nums db '123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899'
+    is_prime_msg db " is prime.", 0xA, 0
+    not_prime_msg db " is not prime.", 0xA, 0
+
+section .bss
+    buffer resb 50  ; Increase buffer size for safety
+
+section .text
+global _start
+
+_start:
+    ; Initialize the pointer and counter
+    xor rbx, rbx
+
+loop_head:
+    ; Check if end of the array is reached
+    cmp rbx, 189
+    jge loop_exit
+
+    ; Set rsi to current position in nums
+    mov rsi, nums
+    add rsi, rbx
+    mov rdx, 1
+    cmp rbx, 9
+    jl print
+    add rdx, 1
+
+print:
+    ; Print the current number
+    mov rdi, 1       ; Stdout
+    mov rax, 1       ; Syscall for write
+    syscall
+
+    ; Advance the pointer by number of digits
+    add rbx, rdx
+
+    ; Extract the number from the buffer
+    call extract_number
+
+    ; Check if the number is prime
+    mov rdi, rax     ; Number to check
+    call check_is_prime
+
+    ; Print the corresponding message
+    cmp rax, 1
+    je .print_prime_msg
+    mov rsi, not_prime_msg
+    call print_message
+    jmp .print_newline
+
+.print_prime_msg:
+    mov rsi, is_prime_msg
+    call print_message
+
+.print_newline:
+    ; Print a newline
+    mov rsi, newline
+    mov rdx, 1
+    mov rdi, 1
+    mov rax, 1       ; Syscall for write
+    syscall
+
+    jmp loop_head
+
+loop_exit:
+    ; Exit program
+    mov rax, 60
+    xor rdi, rdi
+    syscall
+
+print_message:
+    call strlen            ; Calculate message length
+    mov rax, 1             ; Syscall for write
+    mov rdi, 1             ; Stdout
+    syscall
+    ret
+
+strlen:
+    xor rcx, rcx
+.strlen_loop:
+    movzx rdx, byte [rsi + rcx]
+    cmp dl, 0
+    je strlen_done
+    inc rcx
+    jmp .strlen_loop
+
+strlen_done:
+    mov rdx, rcx
+    ret
+
+extract_number:
+    ; Convert ASCII digits to integer
+    xor rax, rax      ; Clear rax (accumulator)
+    xor rcx, rcx      ; Clear rcx (index)
+
+extract_loop:
+    ; Safe memory access and bounds check
+    cmp rcx, 2       ; Adjust bounds check to 2
+    jge done_extract
+
+    movzx rdx, byte [rsi + rcx]
+
+    ; Check for non-digit characters
+    cmp dl, '0'
+    jb done_extract
+    cmp dl, '9'
+    ja done_extract
+
+    ; Convert ASCII to integer
+    sub dl, '0'       ; Convert ASCII to integer
+    imul rax, rax, 10
+    add rax, rdx
+    inc rcx
+    jmp extract_loop
+
+done_extract:
+    ret
+
+check_is_prime:
+    ; Handle small values directly
+    cmp rdi, 2
+    je is_prime       ; 2 is prime
+    cmp rdi, 3
+    je is_prime       ; 3 is prime
+    cmp rdi, 5
+    je is_prime       ; 5 is prime
+    cmp rdi, 7
+    je is_prime       ; 7 is prime
+    jl not_prime      ; Numbers < 2 are not prime
+
+    ; Eliminate even numbers > 2
+    test rdi, 1        ; Check if rdi is odd
+    jz not_prime      ; If even, not prime
+
+    ; Start divisor at 3
+    mov rcx, 3
+
+check_loop:
+    ; Stop when rcx * rcx > rdi
+    mov rax, rcx
+    imul rax, rcx      ; Calculate rcx * rcx
+    cmp rax, rdi
+    jg is_prime       ; If rcx * rcx > rdi, rdi is prime
+
+    ; Check divisibility
+    mov rax, rdi
+    xor rdx, rdx
+    div rcx            ; Divide rdi by rcx
+    test rdx, rdx      ; Check remainder
+    jz not_prime      ; If divisible, not prime
+
+    ; Increment divisor by 2 (skip even numbers)
+    add rcx, 2
+    jmp check_loop
+
+is_prime:
+    mov rax, 1         ; rdi is prime
+    ret
+
+not_prime:
+    mov rax, 0         ; rdi is not prime
+    ret
+
+print_number:
+    xor rdx, rdx
+    mov rcx, 10
+    mov rsi, buffer + 50  ; Point to the end of the buffer (adjusted size)
+
+number_loop:
+    xor rdx, rdx
+    div rcx               ; Divide rax by 10
+    add dl, '0'           ; Convert remainder to ASCII
+    dec rsi
+    mov [rsi], dl         ; Store ASCII character
+    test rax, rax
+    jnz number_loop      ; Repeat until quotient is zero
+
+    inc rsi               ; Move to the start of the number string
+    mov rdx, buffer + 50  ; End of buffer (adjusted size)
+    sub rdx, rsi          ; Calculate length of number string
+
+    ; Print the number string
+    mov rax, 1            ; Syscall for write
+    mov rdi, 1            ; Stdout
+    mov rsi, rsi          ; Start of number string
+    syscall
+    ret
+
+print_newline:
+    mov rsi, newline
+    call print_message
+    ret
