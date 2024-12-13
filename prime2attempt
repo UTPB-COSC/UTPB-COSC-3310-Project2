@@ -1,16 +1,9 @@
 section .data
-newline db 0x0a, 0x00
-nl_len equ $ - newline
-msg_prime db " is prime.",0x0a
 msgprime_len equ $- msg_prime
 msg_notprime db " is not prime.",0x0a
 msgnot_len equ $-msg_notprime
 nums db '0123456789'
 num0 dq 1
-num1 dq 1
-num2 dq 1
-count dq 1
-iter dq 99
 
 section .text
 global _start
@@ -1507,4 +1500,404 @@ _start:
     mov rcx, msg_prime
     mov rbx, 1
     mov rax, 4 
+    int 0x80
+
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 8
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 0
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 8
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 1
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 8
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 2
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 8
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 3
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgprime_len
+    mov rcx, msg_prime
+    mov rbx, 1
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 8
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 4
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 8
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 5
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 8
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 6
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 8
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 7
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 8
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 8
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 8
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 9
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgprime_len
+    mov rcx, msg_prime
+    mov rbx, 1
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 9
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 0
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 9
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 1
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 9
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 2
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 9
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 3
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 9
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 4
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 9
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 5
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 9
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 6
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 9
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 7
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgprime_len
+    mov rcx, msg_prime
+    mov rbx, 1
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 9
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 8
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 9
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, 1 
+    mov rcx, nums
+    add rcx, 9
+    mov rbx, 1 
+    mov rax, 4 
+    int 0x80
+    
+    mov rdx, msgnot_len
+    mov rcx, msg_notprime
+    mov rbx, 1
+    mov rax, 4
     int 0x80
