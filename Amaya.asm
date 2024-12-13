@@ -6,7 +6,7 @@ is_prime_msg db ' is prime', 0x0a, 0x00 ; " is prime" message
 prime_len equ $ - is_prime_msg
 not_prime_msg db ' is not prime', 0x0a, 0x00 ; " is not prime" message
 not_prime_len equ $ - not_prime_msg
-num resq 1                      ; Current number
+num db 1                      ; Current number
 
 section .text
 global _start
