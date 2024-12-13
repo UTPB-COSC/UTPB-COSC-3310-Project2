@@ -1,4 +1,7 @@
 section .data
+newline db 0x0a, 0x00
+nl_len equ $ - newline
+msg_prime db " is prime.",0x0a
 msgprime_len equ $- msg_prime
 msg_notprime db " is not prime.",0x0a
 msgnot_len equ $-msg_notprime
@@ -1900,4 +1903,7 @@ _start:
     mov rcx, msg_notprime
     mov rbx, 1
     mov rax, 4
+    int 0x80
+
+    mov rax, 1
     int 0x80
