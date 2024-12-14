@@ -32,7 +32,7 @@ loop_body:
 	; write number
 	mov rbx, 1
 	add rax, rdx
-	mov [nums_count], rax ; preserve rax in nums counter
+	mov [nums_count], rax ; preserve rax in nums counter.
 	mov rax, 4
 	int 0x80
 
