@@ -23,10 +23,8 @@ check_loop:
     cmp rax, 100
     jge exit_program
 
-    ;
     call display_number
 
-   
     call is_number_prime
 
     
@@ -63,11 +61,9 @@ exit_program:
 display_number:
     mov rax, QWORD [counter]
 
-    
     cmp rax, 10
     jl single_digit_output
 
-    
     call split_and_print
     ret
 
@@ -119,12 +115,10 @@ split_digits:
     cmp rdi, 0
     je finish_split
 
-   
     mov rdx, 0
     mov rbx, 10
     div rbx                         
 
-    
     push rdx
     add rbp, 1                      
     mov rdi, rax                    
@@ -136,7 +130,6 @@ print_digits:
     cmp rbp, 0
     je end_digit_print
 
-    
     pop rdi
     mov rdx, 1
     mov rcx, digits
