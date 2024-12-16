@@ -1,0 +1,128 @@
+section .data
+    num dq 1                        ; Current number (1 to 99)
+    primeMsg db " is prime", 10      ; Prime message
+    primeMsg_len equ $-primeMsg
+    notPrimeMsg db " is not prime", 10 ; Not prime message
+    notPrimeMsg_len equ $-notPrimeMsg
+    digits db "0123456789"           ; Digits for printing numbers
+
+section .comment
+db "This code prints numbers from 1 to 99 and indicates if each is prime, using only rax, rbx, rcx, and rdx registers."
+
+section .text
+    global _start
+
+_start:
+
+mainLoop:
+    mov rax, [num]                  ; Load current number
+    cmp rax, 100                    ; If rax >= 100, exit loop
+    jge main_exit
+
+    ; Print the current number
+    mov rax, [num]
+    call printInt
+
+    ; Check if the current number is prime
+    mov rax, [num]
+    call isPrime                    ; Result in rax: 1 = prime, 0 = not prime
+    cmp rax, 1
+    je printPrime
+
+    ; Print "is not prime"
+    mov rax, 4
+    mov rbx, 1
+    mov rcx, notPrimeMsg
+    mov rdx, notPrimeMsg_len
+    int 0x80
+    jmp mainLoopUpdate
+
+printPrime:
+    ; Print "is prime"
+    mov rax, 4
+    mov rbx, 1
+    mov rcx, primeMsg
+    mov rdx, primeMsg_len
+    int 0x80
+
+mainLoopUpdate:
+    inc qword [num]                 ; Increment number
+    jmp mainLoop
+
+main_exit:
+    mov rax, 1                      ; Syscall: exit
+    xor rbx, rbx
+    int 0x80
+
+; Subroutine: Check if the number in rax is prime
+isPrime:
+    push rbx
+    push rcx
+    push rdx
+
+    cmp rax, 1                      ; 1 is not prime
+    jle not_prime
+
+    mov rcx, 2                      ; Start checking from 2
+    mov rbx, rax                    ; Copy number into rbx (for division limit)
+
+isPrimeLoop:
+    mov rax, rbx                    ; Reload number
+    xor rdx, rdx                    ; Clear remainder
+    div rcx                         ; rax = rbx / rcx, rdx = rbx % rcx
+    cmp rdx, 0                      ; Check if divisible
+    je not_prime                    ; If divisible, not prime
+
+    inc rcx                         ; Increment divisor
+    mov rax, rcx
+    mul rcx                         ; rcx^2
+    cmp rax, rbx                    ; Compare rcx^2 with number
+    jl isPrimeLoop                  ; If rcx^2 < number, continue
+
+    mov rax, 1                      ; Prime: return 1
+    jmp isPrimeDone
+
+not_prime:
+    xor rax, rax                    ; Not prime: return 0
+
+isPrimeDone:
+    pop rdx
+    pop rcx
+    pop rbx
+    ret
+
+; Subroutine: Print an integer in rax
+printInt:
+    push rax
+    push rbx
+    push rcx
+    push rdx
+
+    xor rcx, rcx                    ; Digit count = 0
+    mov rbx, 10                     ; Base 10
+
+printIntL1:
+    xor rdx, rdx                    ; Clear rdx
+    div rbx                         ; rax = rax / 10, rdx = remainder
+    push rdx                        ; Save remainder (digit)
+    inc rcx                         ; Increment digit count
+    cmp rax, 0
+    jne printIntL1
+
+printIntL2:
+    pop rax                         ; Get next digit
+    push rcx                        ; Save digit count
+    mov rcx, digits                 ; Address of digits array
+    add rcx, rax                    ; Point to correct ASCII character
+    mov rax, 4                      ; Syscall: write
+    mov rbx, 1                      ; File descriptor: stdout
+    mov rdx, 1                      ; Write 1 byte
+    int 0x80
+    pop rcx                         ; Restore digit count
+    loop printIntL2                 ; Repeat until all digits are printed
+
+    pop rdx
+    pop rcx
+    pop rbx
+    pop rax
+    ret
